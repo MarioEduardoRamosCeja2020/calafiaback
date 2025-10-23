@@ -1,5 +1,5 @@
-// src/users/entities/user.entity.ts
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { EmailVerificationToken } from '../../auth/email-verification/email-token.entity';
 
 @Entity('usuarios') // Asegúrate de usar el nombre real de la tabla
 export class Usuario {
@@ -24,7 +24,6 @@ export class Usuario {
   @Column({ type: 'varchar', length: 100, nullable: true })
   correo_elec_usu: string;
 
-
   @Column({ type: 'varchar', length: 255, nullable: true }) // También recomendable aumentar longitud
   PassWord_correo_usu: string;
 
@@ -34,4 +33,6 @@ export class Usuario {
   @Column({ type: 'bit', default: false })
   isEmailVerified: boolean;
 
+  @OneToMany(() => EmailVerificationToken, (token) => token.usuario)
+  verificationTokens: EmailVerificationToken[];
 }

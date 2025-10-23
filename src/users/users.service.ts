@@ -1,8 +1,7 @@
-// src/users/users.service.ts
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Usuario } from './entities/usuario.entity';
+import { Usuario } from './entities/usuario.entity'; // ✅ Correct import
 import { RegisterDto } from '../auth/dto/register.dto';
 
 @Injectable()
@@ -17,7 +16,15 @@ export class UsersService {
       where: { Login_usu: login },
     });
 
-    return user ?? undefined; // ✅ evita el error de asignación de null
+    return user ?? undefined;
+  }
+
+  async findByEmail(email: string): Promise<Usuario | undefined> {
+    const user = await this.userRepository.findOne({
+      where: { correo_elec_usu: email },
+    });
+
+    return user ?? undefined;
   }
 
   async create(data: RegisterDto): Promise<Usuario> {
@@ -29,5 +36,22 @@ export class UsersService {
     });
 
     return await this.userRepository.save(user);
+  }
+
+  async update(id: number, updateData: Partial<Usuario>): Promise<Usuario> {
+    // Ensure the user exists before updating
+    const user = await this.userRepository.findOne({
+      where: { Id_usu: id },  // Use the correct column name (Id_usu)
+    });
+
+    if (!user) {
+      throw new Error(`User with id ${id} not found`);
+    }
+
+    // Apply the update
+    Object.assign(user, updateData);
+
+    // Save and return the updated user
+    return this.userRepository.save(user);
   }
 }
