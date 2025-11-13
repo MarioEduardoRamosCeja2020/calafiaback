@@ -133,7 +133,7 @@ export class AuthService {
 
         await this.tokenRepo.save(resetToken);
 
-            const resetUrl = `http://localhost:3000/reset-password?token=${token}`;
+            const resetUrl = `http://localhost:3001/reset-password?token=${token}`;
 
         const transporter = nodemailer.createTransport({
           host: 'mail.grupocalafia.com.mx',

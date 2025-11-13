@@ -5,7 +5,7 @@ import { ResultsModule } from './results/results.module';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { MailModule } from './mail/mail.module';
-
+import { RoutesModule } from './routes/routes.module';
 
 @Module({
   imports: [
@@ -29,6 +29,7 @@ import { MailModule } from './mail/mail.module';
     AuthModule,
     UsersModule,
     MailModule,
+    RoutesModule,
   ],
 })
 export class AppModule {}
