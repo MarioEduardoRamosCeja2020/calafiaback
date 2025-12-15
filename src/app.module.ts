@@ -6,6 +6,9 @@ import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { MailModule } from './mail/mail.module';
 import { RoutesModule } from './routes/routes.module';
+import { FullRoutesModule } from './full-routes/full-routes.module';
+import { ClassBulkModule } from './classbulk/classbulk.module';
+
 
 @Module({
   imports: [
@@ -30,6 +33,8 @@ import { RoutesModule } from './routes/routes.module';
     UsersModule,
     MailModule,
     RoutesModule,
+    FullRoutesModule,
+    ClassBulkModule,
   ],
 })
 export class AppModule {}
