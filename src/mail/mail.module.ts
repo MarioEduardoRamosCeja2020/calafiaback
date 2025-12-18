@@ -10,11 +10,19 @@ import { MailService } from './mail.service';
       transport: {
         host: 'mail.grupocalafia.com.mx',
         port: 587,
-        // secure: false,
+        secure: false, // Usar false para puerto 587
         auth: {
           user: 'calafia.soporte@grupocalafia.com.mx',
-          pass: '33.M@iltcala',
+          pass: '33.M@iltcala', // <--- Asegúrate de poner la clave
         },
+        tls: {
+          // Esto ayuda si el servidor de grupocalafia tiene certificados auto-firmados
+          rejectUnauthorized: false 
+        }
+      },
+      defaults: {
+        // IMPORTANTE: Esto evita que el correo salga como "localhost"
+        from: '"Soporte Calafia" <calafia.soporte@grupocalafia.com.mx>',
       },
     }),
   ],

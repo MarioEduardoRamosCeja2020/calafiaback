@@ -8,6 +8,7 @@ import { MailModule } from './mail/mail.module';
 import { RoutesModule } from './routes/routes.module';
 import { FullRoutesModule } from './full-routes/full-routes.module';
 import { ClassBulkModule } from './classbulk/classbulk.module';
+import { QuotesModule } from './quotes/quotes.module';
 
 
 @Module({
@@ -35,6 +36,7 @@ import { ClassBulkModule } from './classbulk/classbulk.module';
     RoutesModule,
     FullRoutesModule,
     ClassBulkModule,
+    QuotesModule,
   ],
 })
 export class AppModule {}

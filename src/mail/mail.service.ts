@@ -1,19 +1,28 @@
 import { Injectable } from '@nestjs/common';
-import * as nodemailer from 'nodemailer';
+import { MailerService } from '@nestjs-modules/mailer';
 
 @Injectable()
 export class MailService {
-  private transporter;
+  constructor(private readonly mailerService: MailerService) {}
 
-  constructor() {
-    // this.transporter = nodemailer.createTransport({
-    //   service: 'mail.grupocalafia.com.mx',
-    //   auth: {
-    //     user: 'calafia.soporte@grupocalafia.com.mx',      // Cambia a tu correo
-    //     pass: '33.M@iltcala',       // Cambia a tu contraseña o app password
-    //   },
-    // });
+  async sendQuote(to: string, pdfBuffer: Buffer, folio: number, htmlContent: string) {
+    try {
+      await this.mailerService.sendMail({
+        to: to,
+        subject: `Cotización Calafia Logística - Folio ${folio}`,
+        html: htmlContent, // Recibe el diseño desde el QuotesService
+        attachments: [
+          {
+            filename: `Cotizacion_${folio}.pdf`,
+            content: pdfBuffer,
+            contentType: 'application/pdf',
+          },
+        ],
+      });
+      console.log(`Email enviado con éxito al folio: ${folio}`);
+    } catch (error) {
+      console.error('Error enviando mail:', error);
+      throw error;
+    }
   }
-
-  
 }
