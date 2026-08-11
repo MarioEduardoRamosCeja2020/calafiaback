@@ -10,15 +10,75 @@ export class ResultsService {
     private readonly resultRepository: Repository<Result>,
   ) {}
 
-  async searchBySerieFolio(kindReport: string, serie: string, folio: string): Promise<Result[]> {
+  async searchBySerieFolio(
+    kindReport: string,
+    serie: string,
+    folio: string,
+  ): Promise<{
+    estatus: any[];
+    mercancia: any[];
+  }> {
     try {
-      const query = `
-        SELECT * FROM EstatusMercancia(@0, @1, @2)
+      // ============================================
+      // CONSULTA 1: ESTATUS
+      // ============================================
+      const queryEstatus = `
+        SELECT *
+        FROM EstatusMercancia(@0, @1, @2)
       `;
 
-      const results = await this.resultRepository.query(query, [kindReport, serie, folio]);
-      return results;
+      const estatus = await this.resultRepository.query(
+        queryEstatus,
+        [kindReport, serie, folio],
+      );
 
+      // Si no existe el documento, no consultamos mercancía
+      if (!estatus.length) {
+        return {
+          estatus: [],
+          mercancia: [],
+        };
+      }
+
+      // ============================================
+      // CONSULTA 2: MERCANCÍA
+      // ============================================
+      const queryMercancia = `
+        SELECT
+            dfcp.Numero AS CANTIDAD,
+            cb.Nombre_cbul AS CLASE,
+            dfcp.Contienen AS QUE_SE_DICE_QUE_CONTIENE
+        FROM DatosFleteCartaPorte_vst AS dfcp
+        INNER JOIN ClaseBulto AS cb
+            ON cb.Id_cbul = dfcp.Id_cbul
+        INNER JOIN CartaPorte_vst AS cp
+            ON cp.Id_cp = dfcp.Id_doc
+        INNER JOIN BloqueFolios AS bf
+            ON bf.Id_suc_bfol = cp.Id_suc_cp
+           AND bf.Id_tdoc_bfol = cp.Id_tdoc_cp
+           AND bf.Estatus_bfol = 'A'
+        WHERE cp.Numero_cp = @0
+          AND bf.Serie_bfol = @1
+          AND cp.Id_tdoc_cp = 4
+      `;
+
+      const mercancia = await this.resultRepository.query(
+        queryMercancia,
+        [
+          folio,
+          serie,
+        ],
+      );
+
+      // ============================================
+      // RESPUESTA
+      // ============================================
+
+      console.log(estatus,mercancia);
+      return {
+        estatus,
+        mercancia,
+      };
     } catch (error) {
       console.error('❌ Error en searchBySerieFolio:', error);
       throw error;

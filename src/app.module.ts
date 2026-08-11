@@ -12,19 +12,21 @@ import { ResultsModule } from './results/results.module';
     TypeOrmModule.forRoot({
       type: 'mssql',
       host: '192.168.1.11',
-      port: Number('1432'),
+      port: Number('1333'),
       username: 'sa',
       password: '333.Calaf1a',
       database:'stc_db',
       autoLoadEntities: true,
       synchronize: false,
-      options: {
-        instanceName: 'Pruebas',
-        encrypt: true, 
-        trustServerCertificate: true, 
-      },
+      // requestTimeout: 220000, // 120 segundos si la consulta es lenta
+  options: {
+    encrypt: true,
+    enableArithAbort: true,
+    trustServerCertificate: true,
+    
+  },
     }),
-    ResultsModule, 
+    ResultsModule,
   ],
 })
 export class AppModule {}

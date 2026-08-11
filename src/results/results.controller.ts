@@ -14,4 +14,9 @@ export class ResultsController {
   ) {
     return this.resultsService.searchBySerieFolio(kindReport, serie, folio);
   }
+
+    // @Get('test-connection')
+    // async testConnection() {
+    //   return this.resultsService.testConnection();
+    // }
 }
