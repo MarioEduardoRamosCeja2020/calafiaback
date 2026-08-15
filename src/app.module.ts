@@ -2,8 +2,14 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { ResultsModule } from './results/results.module';
-// import { Result } from './results/result.entity';
-// imports: [TypeOrmModule.forFeature([Result])]
+import { AuthModule } from './auth/auth.module';
+import { UsersModule } from './users/users.module';
+import { MailModule } from './mail/mail.module';
+import { RoutesModule } from './routes/routes.module';
+import { FullRoutesModule } from './full-routes/full-routes.module';
+import { ClassBulkModule } from './classbulk/classbulk.module';
+import { QuotesModule } from './quotes/quotes.module';
+
 
 
 @Module({
@@ -27,6 +33,13 @@ import { ResultsModule } from './results/results.module';
   },
     }),
     ResultsModule,
+    AuthModule,
+    UsersModule,
+    MailModule,
+    RoutesModule,
+    FullRoutesModule,
+    ClassBulkModule,
+    QuotesModule,
   ],
 })
 export class AppModule {}
